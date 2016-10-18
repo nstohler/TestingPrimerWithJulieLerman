@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace DbAccessLib
 {
@@ -37,6 +38,24 @@ namespace DbAccessLib
 			return _personDbContext.PersonSet
 				.Where(p => p.LastName.Contains(substring))
 				.ToList();
+		}
+
+		public List<Person> GetPersonsWithAddresses()
+		{
+			var query = _personDbContext.PersonSet
+						.Include(x => x.AddressSet)
+						.Select(p => p);
+
+			return query.ToList();
+		}
+
+		public void RemoveById(int personId)
+		{
+			var p = _personDbContext.PersonSet.Single(x => x.PersonId == personId);
+
+			_personDbContext.PersonSet.Remove(p);
+
+			_personDbContext.SaveChanges();
 		}
 	}
 }

@@ -15,18 +15,28 @@ namespace DbAccess_console
 			{
 				PersonDbService dbAccess = new PersonDbService(context);				
 
-				var p = new Person()
+				//var p = new Person()
+				//{sd
+				//	FirstName = "Tina",
+				//	LastName = "Körner",
+				//	BirthDate = new DateTime(1982, 12, 11),
+				//	ShoeSizeUS = 7.0,
+				//};
+
+				////context.PersonSet.Add(p);
+				////context.SaveChanges();
+
+				//dbAccess.AddPerson(p);
+
+				var personSet = dbAccess.GetPersonsWithAddresses();
+				foreach (var person in personSet)
 				{
-					FirstName = "Tina",
-					LastName = "Körner",
-					BirthDate = new DateTime(1982, 12, 11),
-					ShoeSizeUS = 7.0,
-				};
-
-				//context.PersonSet.Add(p);
-				//context.SaveChanges();
-
-				dbAccess.AddPerson(p);
+					Console.WriteLine("{0} : ", person.FullName);
+					foreach (var address in person.AddressSet)
+					{
+						Console.WriteLine("    {0} in {1}", address.Street, address.City);
+					}
+				}
 
 			}
 		}
